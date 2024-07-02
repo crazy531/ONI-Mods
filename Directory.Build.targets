@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+  <!--Ignore the contents of the Previews folder.-->
+  <ItemGroup>
+    <Compile Remove="Previews\**" />
+    <EmbeddedResource Remove="Previews\**" />
+    <None Remove="Previews\**" />
+  </ItemGroup>
+
+  <!--Publicise the game's assemblies on rebuilds.-->
+
+
+  <!--Increment the version number after each build, resetting each day.-->
+  <Import Project="AutoIncrement.targets" />
+  <Target Name="AutoIncrement" BeforeTargets="PrepareForBuild">
+    <AutoIncrement Path="$(IntermediateOutputPath)">
+      <Output
+        PropertyName="ProjectRevision"
+        TaskParameter="Revision" />
+    </AutoIncrement>
+    <PropertyGroup>
+      <Version>$([System.DateTime]::Now.Year).$([System.DateTime]::Now.Month).$([System.DateTime]::Now.Day).$(ProjectRevision)</Version>
+    </PropertyGroup>
+  </Target>
+
+  <!--Create and update the mod_info and mod file.-->
+  <Target Name="WriteModInfoFile" BeforeTargets="PreBuildEvent">
+    <WriteLinesToFile File="$(TargetDir)\mod_info.yaml" Overwrite="true" Lines=
+                      "APIVersion: 2;
+                      supportedContent: $(supportedContent);
+                      minimumSupportedBuild: $(minimumSupportedBuild);
+                      version: &quot;$(Version)&quot;" />
+
+    <PropertyGroup>
+      <ModFile>$(TargetDir)\mod.yaml</ModFile>
+      <Title Condition=" '$(Configuration)' == 'Debug' ">DEV: $(Title)</Title>
+    </PropertyGroup>
+    <WriteLinesToFile File="$(ModFile)" Overwrite="true" Lines=
+                      "staticID: crazyxyr.$(AssemblyName);
+                      description: &quot;$(Description)&quot;;
+                      title: &quot;$(Title)&quot;" />
+  </Target>
+
+  <!--Prevent game assemblies from being copied (and thus merged).-->
+  <Target Name="ClearCopyLocalReferences" AfterTargets="ResolveAssemblyReferences">
+    <ItemGroup>
+      <ReferenceCopyLocalPaths Remove="$(GameFolder)\* " />
+    </ItemGroup>
+  </Target>
+
+  <!--Merge required assemblies.-->
+  <Target Name="ILRepack" AfterTargets="Build" Condition=" '$(ILRepack)' != 'false'">
+    <!--The primary assembly must be the first one, so this is ugly.-->
+    <ItemGroup>
+      <InputAssemblies Include ="$(TargetPath)" />
+      <InputAssemblies
+        Include ="$(TargetDir)\*.dll"
+        Exclude ="$(TargetPath); **/System.*"/>
+    </ItemGroup>
+    <ILRepack
+      TargetPlatformVersion="v4"
+			TargetKind="SameAsPrimaryAssembly"
+			OutputFile="$(TargetPath)"
+			InputAssemblies="@(InputAssemblies)"
+			Wildcards="true"
+      LibraryPath="$(GameFolder)"
+      Parallel="true"/>
+  </Target>
+
+  <!--Clear the install folder while preserving current configs.-->
+  <Target Name="ClearInstallFolder" AfterTargets="ILRepack" Condition="'$(ShouldDistribute)' != 'false' And Exists($(InstallFolder))">
+    <ItemGroup>
+      <FilesToDelete Include="$(InstallFolder)\**\*.*" Exclude="$(InstallFolder)\config.json"/>
+      <DirsToDelete Include="$([System.IO.Directory]::GetDirectories('$(InstallFolder)', '*', System.IO.SearchOption.AllDirectories))" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" />
+    <RemoveDir Directories="@(DirsToDelete)" />
+
+  </Target>
+
+	<Target Name="ClearDevFolder" AfterTargets="ClearInstallFolder" Condition="'$(ShouldDistribute)' != 'false' And Exists($(DevFolder)) And '$(Configuration)' == 'Release' ">
+		<ItemGroup>
+			<FilesToDelete Include="$(ModFolder)\DEV_$(MSBuildProjectName)\**\*.*" />
+			<DirsToDelete Include="$([System.IO.Directory]::GetDirectories('$(ModFolder)\DEV_$(MSBuildProjectName)', '*', System.IO.SearchOption.AllDirectories))" />
+		</ItemGroup>
+		<Delete Files="@(FilesToDelete)" />
+		<RemoveDir Directories="$(DevFolder)" />
+	</Target>	
+	
+	
+  <!--Copy the mod to the install folder.-->
+  <Target Name="CopyArtifactsToInstallFolder" AfterTargets="ClearInstallFolder" Condition=" '$(ShouldDistribute)' != 'false' ">
+    <ItemGroup>
+      <AnimFiles Include="$(ProjectDir)\anim\**\*.*" />
+      <WorldGenFiles Include="$(ProjectDir)\worldgen\**\*.*" />
+      <YamlFiles Include="$(ProjectDir)\*.yaml" />
+      <SpriteFiles Include="$(ProjectDir)\*.dds" />
+      <TranslateFiles Include="$(TranslationsFolder)\$(MSBuildProjectName)\*.po" />
+      <InfoFiles Include="$(TargetDir)\*.yaml" />
+	  <PreviewPng Include="$(ProjectDir)\*.png" />
+	  <TranslatePo Include="$(ProjectDir)\strings\*.*" />
+
+
+	</ItemGroup>
+    <Copy SourceFiles="@(AnimFiles)" DestinationFiles="@(AnimFiles->'$(InstallFolder)\anim\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(WorldGenFiles)" DestinationFiles="@(WorldGenFiles->'$(InstallFolder)\worldgen\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(YamlFiles)" DestinationFolder="$(InstallFolder)" />
+    <Copy SourceFiles="@(SpriteFiles)" DestinationFolder="$(InstallFolder)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(InstallFolder)\$(TargetFileName)" />
+    <Copy SourceFiles="@(InfoFiles)" DestinationFolder="$(InstallFolder)" />
+    <Copy SourceFiles="@(TranslateFiles)" DestinationFolder="$(InstallFolder)\Translations" />
+	<Copy SourceFiles="@(PreviewPng)" DestinationFolder="$(InstallFolder)" />
+	<Copy SourceFiles="@(TranslatePo)" DestinationFolder="$(InstallFolder)\strings\" />
+
+  </Target>
+
+  <!--If releasing, create a zipped version of the mod to distribute for manual downloads.-->
+  <Target Name="Zip" AfterTargets="CopyArtifactsToInstallFolder" Condition=" '$(Configuration)' == 'Release' And '$(ShouldDistribute)' != 'false' ">
+    <CreateItem
+      Include="$(InstallFolder)\**\*.*"
+      Exclude="$(InstallFolder)\*.zip">
+      <Output
+        ItemName="ZipFiles"
+        TaskParameter="Include"/>
+    </CreateItem>
+    <Zip
+      ZipFileName="$(DistributeFolder)\$(ProjectName).zip"
+      WorkingDirectory="$(InstallFolder)"
+      Files="@(ZipFiles)"
+      Flatten="false" />
+  </Target>
+
+
+
+</Project>

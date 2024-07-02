@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  
+  <PropertyGroup>
+    <AssemblyTitle>ItemSkinUnlock</AssemblyTitle>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Title>ItemSkinUnlock</Title>
+    <Description>解锁物品皮肤.</Description>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <None Remove="Export\README.md" />
+  </ItemGroup>
+
+	<PropertyGroup>
+		<UsesPLib>false</UsesPLib>
+		<ILRepack>false</ILRepack>
+
+	</PropertyGroup>
+
+	<ItemGroup>
+    <None Update="preview.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  
+</Project>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+
+        <UseCommons>false</UseCommons>
+		<AssemblyName>Commons</AssemblyName>
+		<AssemblyTitle>Commons</AssemblyTitle>
+		<ShouldDistribute>false</ShouldDistribute>
+		<ILRepack>false</ILRepack>
+
+	</PropertyGroup>
+
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+           Other similar extension points exist, see Microsoft.Common.targets.
+      <Target Name="BeforeBuild">
+      </Target>
+      <Target Name="AfterBuild">
+      </Target>
+      -->
+</Project>

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <SteamFolder>F:\SteamLibrary</SteamFolder>
+    <GameFolder>$(SteamFolder)\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed</GameFolder>
+    <ModFolder>$(UserProfile)\Documents\Klei\OxygenNotIncluded\mods\local</ModFolder>
+  </PropertyGroup>
+</Project>
