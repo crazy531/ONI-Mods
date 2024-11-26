@@ -1,8 +1,9 @@
 using HarmonyLib;
 using KSerialization;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace undancer.SelectLastCarePackage
+namespace crazyxyr.SelectLastCarePackage
 {
     public class ImmigrantScreenContext : KMonoBehaviour
     {
@@ -14,14 +15,89 @@ namespace undancer.SelectLastCarePackage
     {
 
 
-        public static void Reshuffle(ITelepadDeliverableContainer container)
+        public static void Reshuffle(CarePackageContainer container)
         {
-            Traverse.Create(container).Method("Reshuffle", new object[] { true }).GetValue();
 
-            //MethodInfo method = container.GetType().GetMethod("Reshuffle", BindingFlags.Instance | BindingFlags.NonPublic);
 
-            //            method?.Invoke(container, new object[] { true });
+
+            CharacterSelectionController controller = Traverse.Create(container).Field("controller").GetValue<CharacterSelectionController>();
+            CarePackageContainer.CarePackageInstanceData carePackageInstanceData = Traverse.Create(container).Field("carePackageInstanceData").GetValue<CarePackageContainer.CarePackageInstanceData>();
+
+
+
+            if (controller != null && controller.IsSelected(carePackageInstanceData)) // fix The original method Equals error
+            {
+                container.DeselectDeliverable();
+            }
+            else 
+            {
+                ImmigrantScreenMethod.DeselectOtherDeliverable(controller);
+
+             }
+
+            Traverse.Create(container).Method("ClearEntryIcons").GetValue();
+            Traverse.Create(container).Method("GenerateCharacter", new object[] { true }).GetValue();
+
         }
+
+
+
+        public static void DeselectOtherDeliverable(CharacterSelectionController controller)
+        {
+
+            List<ITelepadDeliverable> selectedDeliverables = Traverse.Create(controller).Field("selectedDeliverables").GetValue<List<ITelepadDeliverable>>();
+            List<ITelepadDeliverableContainer> containers = Traverse.Create(controller).Field("containers").GetValue<List<ITelepadDeliverableContainer>>();
+
+            if (controller != null && containers != null && selectedDeliverables != null && selectedDeliverables.Count > 0)
+            {
+
+
+                foreach (var item in containers)
+                {
+
+                    if (item is CharacterContainer characterContainer)
+
+                    {
+
+                        if (selectedDeliverables.Contains(characterContainer.Stats))
+                        {
+
+                            characterContainer.DeselectDeliverable();
+                            break;
+
+
+                        }
+
+
+                    }
+                    else if (item is CarePackageContainer carePackageContainer)
+                    {
+                        //global::Debug.Log("CarePackageContainer："+ carePackageContainer.Info.id);
+
+                        if (selectedDeliverables.Contains(carePackageContainer.carePackageInstanceData))
+                        {
+
+                            carePackageContainer.DeselectDeliverable();
+                            break;
+
+                        }
+                    }
+                
+
+
+                }
+
+            }
+            else {
+
+                global::Debug.Log("其他containers没有找到被选中的");
+
+            }
+
+
+        }
+
+
 
         public static void ShowButton(ImmigrantScreen __instance)
         {
@@ -31,19 +107,28 @@ namespace undancer.SelectLastCarePackage
             {
                 deliverableContainerList.ForEach(c =>
                 {
-                    if (c is CharacterContainer characterContainer) characterContainer.SetReshufflingState(true);
+                    if (c is CharacterContainer characterContainer)
+                    {
+                        characterContainer.SetReshufflingState(true);
+
+                    }
+
                     else if (c is CarePackageContainer carePackageContainer)
-
-
+                    {
 
                         carePackageContainer.SetReshufflingState(true);
 
-                    Traverse.Create(c).Field("reshuffleButton").Field("onClick").SetValue(new System.Action(delegate
-                    {
+                        Traverse.Create(carePackageContainer).Field("reshuffleButton").Field("onClick").SetValue(new System.Action(delegate
+                        {
 
-                        ImmigrantScreenMethod.Reshuffle(c);
+                            ImmigrantScreenMethod.Reshuffle(carePackageContainer);
 
-                    }));
+                        }));
+                    }
+
+
+
+               
                 }
 
             );

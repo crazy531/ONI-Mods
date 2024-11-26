@@ -1,4 +1,4 @@
-namespace undancer.SelectLastCarePackage
+namespace crazyxyr.SelectLastCarePackage
 {
     public static class Languages
     {

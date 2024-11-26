@@ -6,7 +6,7 @@ using HarmonyLib;
 using undancer.Commons;
 using UnityEngine;
 
-namespace undancer.SelectLastCarePackage.Patches
+namespace crazyxyr.SelectLastCarePackage.Patches
 {
     [HarmonyPatch(typeof(ImmigrantScreen), "OnRejectAll")]
     public static class ImmigrantScreenOnRejectAllPatch //按下拒绝全部按钮

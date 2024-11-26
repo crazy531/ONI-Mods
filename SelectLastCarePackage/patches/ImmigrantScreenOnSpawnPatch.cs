@@ -3,7 +3,7 @@ using STRINGS;
 using System.Collections.Generic;
 using undancer.Commons;
 
-namespace undancer.SelectLastCarePackage.Patches
+namespace crazyxyr.SelectLastCarePackage.Patches
 {
     [HarmonyPatch(typeof(ImmigrantScreen), "OnSpawn")]
     public static class ImmigrantScreenOnSpawnPatch // 显示选人界面

@@ -3,7 +3,7 @@ using System.Reflection;
 using HarmonyLib;
 using KMod;
 
-namespace undancer.SelectLastCarePackage
+namespace crazyxyr.SelectLastCarePackage
 {
     public class ModLoader : UserMod2
     {
