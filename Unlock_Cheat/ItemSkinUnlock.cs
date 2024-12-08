@@ -1,22 +1,17 @@
 ﻿using Database;
 using HarmonyLib;
+using Klei.CustomSettings;
 using KMod;
+using Newtonsoft.Json;
+using System.Text;
+using UnityEngine;
 
 
 namespace ItemSkinUnlock
 {
-    public class ItemSkinUnlock : UserMod2
-    {
-        // Token: 0x0600002A RID: 42 RVA: 0x0000239F File Offset: 0x0000059F
-        public override void OnLoad(Harmony harmony)
-        {
-       
-            base.OnLoad(harmony);
 
-        }
-    }
 
-    public class Patches
+    public class ItemSkinUnlock
     {
         [HarmonyPatch(typeof(PermitItems))]
         [HarmonyPatch("GetOwnedCount")]
@@ -43,6 +38,9 @@ namespace ItemSkinUnlock
                 return false;
             }
         }
+
+
     }
+
  
 }
