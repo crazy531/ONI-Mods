@@ -110,6 +110,13 @@ namespace crazyxyr.SelectLastCarePackage
                     if (c is CharacterContainer characterContainer)
                     {
                         characterContainer.SetReshufflingState(true);
+                        if (SaveLoader.Instance.IsDLCActiveForCurrentSave("DLC3_ID"))
+                    {
+                            DropDown modelDropDown = Traverse.Create(characterContainer).Field("modelDropDown").GetValue<DropDown>();
+
+                            modelDropDown.transform.parent.gameObject.SetActive(false);
+                            return;
+                     }
 
                     }
 
