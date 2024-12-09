@@ -11,7 +11,7 @@ namespace ItemSkinUnlock
 {
 
 
-    public class ItemSkinUnlock
+    public class ItemSkin_Unlock
     {
         [HarmonyPatch(typeof(PermitItems))]
         [HarmonyPatch("GetOwnedCount")]

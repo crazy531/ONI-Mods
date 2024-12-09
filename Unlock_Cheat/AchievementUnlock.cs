@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace AchievementUnlock
 {
-    internal class AchievementUnlock
+    internal class Achievement_Unlock
     {
 
         [HarmonyPatch(typeof(Game))]

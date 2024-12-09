@@ -15,7 +15,7 @@
   </ItemGroup>
 
 	<PropertyGroup>
-		<UsesPLib>false</UsesPLib>
+		<UsesPLib>true</UsesPLib>
 		<ILRepack>false</ILRepack>
 
 	</PropertyGroup>
