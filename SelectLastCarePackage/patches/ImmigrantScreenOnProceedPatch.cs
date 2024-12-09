@@ -11,12 +11,10 @@ namespace crazyxyr.SelectLastCarePackage.Patches
         {
             var context = SaveGame.Instance.GetComponent<ImmigrantScreenContext>();
             var selectedDeliverable = ___selectedDeliverables.First();
-          //  Debug.Log("上次结果" + context+"\n"+ selectedDeliverable    );
 
             if (selectedDeliverable is CarePackageContainer.CarePackageInstanceData CarePackageContainer)
             {
                 context.LastSelectedCarePackageInfo = CarePackageContainer.info;
-             //   Debug.Log("保存上次结果" + CarePackageContainer.info);
 
 
 

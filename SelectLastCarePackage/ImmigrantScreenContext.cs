@@ -2,6 +2,7 @@ using HarmonyLib;
 using KSerialization;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace crazyxyr.SelectLastCarePackage
 {
@@ -114,7 +115,19 @@ namespace crazyxyr.SelectLastCarePackage
                     {
                             DropDown modelDropDown = Traverse.Create(characterContainer).Field("modelDropDown").GetValue<DropDown>();
 
-                            modelDropDown.transform.parent.gameObject.SetActive(false);
+                            Canvas canvas1 = modelDropDown.transform.Find("ScrollRect")?.GetComponent<Canvas>();
+                            Canvas canvas2 = __instance.GetComponent<Canvas>();
+
+                            if (canvas1 != null && canvas2 != null)
+                            {
+                                canvas1.sortingOrder = canvas2.sortingOrder + 1;
+                            }
+                            else {
+                                modelDropDown.transform.parent.gameObject.SetActive(false);
+
+                            }
+                           
+
                             return;
                      }
 

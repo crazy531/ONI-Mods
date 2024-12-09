@@ -16,7 +16,6 @@ namespace crazyxyr.SelectLastCarePackage
             Localization.RegisterForTranslation(typeof(Languages));
 #endif
 
-            // RemoveConfig();
         }
 
         private static void RemoveConfig()

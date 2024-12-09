@@ -29,8 +29,7 @@ namespace crazyxyr.SelectLastCarePackage.Patches
                     global::Debug.Log("处理选人错误:" + carePackageContainer.info.id);
 
 
-                    //del.selectedBorder.SetActive(false);
-                    //del.titleBar.color = del.deselectedTitleColor;
+         
 
                 }
                 global::Debug.Log("处理补给包多选错误");
