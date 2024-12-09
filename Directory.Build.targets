@@ -81,15 +81,20 @@
 
 	<Target Name="ClearDevFolder" AfterTargets="ClearInstallFolder" Condition="'$(ShouldDistribute)' != 'false' And Exists($(DevFolder)) And '$(Configuration)' == 'Release' ">
 		<ItemGroup>
-			<FilesToDelete Include="$(ModFolder)\DEV_$(MSBuildProjectName)\**\*.*" />
-			<DirsToDelete Include="$([System.IO.Directory]::GetDirectories('$(ModFolder)\DEV_$(MSBuildProjectName)', '*', System.IO.SearchOption.AllDirectories))" />
+			<FilesToDelete Include="$(ModFolder)\Dev\DEV_$(MSBuildProjectName)\**\*.*" />
 		</ItemGroup>
 		<Delete Files="@(FilesToDelete)" />
 		<RemoveDir Directories="$(DevFolder)" />
-	</Target>	
-	
-	
-  <!--Copy the mod to the install folder.-->
+	</Target>
+
+	<Target Name="ClearLocalFolder" AfterTargets="ClearInstallFolder" Condition="'$(ShouldDistribute)' != 'false' And Exists($(LocalFolder)) And '$(Configuration)' != 'Release' ">
+		<ItemGroup>
+			<FilesToDelete Include="$(ModFolder)\local\$(MSBuildProjectName)\**\*.*" />
+		</ItemGroup>
+		<Delete Files="@(FilesToDelete)" />
+		<RemoveDir Directories="$(LocalFolder)" />
+	</Target>
+	<!--Copy the mod to the install folder.-->
   <Target Name="CopyArtifactsToInstallFolder" AfterTargets="ClearInstallFolder" Condition=" '$(ShouldDistribute)' != 'false' ">
     <ItemGroup>
       <AnimFiles Include="$(ProjectDir)\anim\**\*.*" />

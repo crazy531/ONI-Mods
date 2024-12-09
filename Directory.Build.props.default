@@ -3,6 +3,6 @@
   <PropertyGroup>
     <SteamFolder>F:\SteamLibrary</SteamFolder>
     <GameFolder>$(SteamFolder)\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed</GameFolder>
-    <ModFolder>$(UserProfile)\Documents\Klei\OxygenNotIncluded\mods\local</ModFolder>
+    <ModFolder>$(UserProfile)\Documents\Klei\OxygenNotIncluded\mods</ModFolder>
   </PropertyGroup>
 </Project>

@@ -57,13 +57,15 @@
   
   <!--Direct the output locations based on build configuration.-->
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <InstallFolder>$(ModFolder)\$(MSBuildProjectName)</InstallFolder>
+    <InstallFolder>$(ModFolder)\local\$(MSBuildProjectName)</InstallFolder>
     <DistributeFolder>..\..\Distribute\</DistributeFolder>
-	<DevFolder>$(ModFolder)\DEV_$(MSBuildProjectName)</DevFolder>
+	<DevFolder>$(ModFolder)\Dev\DEV_$(MSBuildProjectName)</DevFolder>
 
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <InstallFolder>$(ModFolder)\DEV_$(MSBuildProjectName)</InstallFolder>
+    <InstallFolder>$(ModFolder)\Dev\DEV_$(MSBuildProjectName)</InstallFolder>
+	<LocalFolder>$(ModFolder)\local\$(MSBuildProjectName)</LocalFolder>
+
   </PropertyGroup>
 
 </Project>
