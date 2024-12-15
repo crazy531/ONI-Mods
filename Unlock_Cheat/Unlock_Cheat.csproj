@@ -16,7 +16,7 @@
 
 	<PropertyGroup>
 		<UsesPLib>true</UsesPLib>
-		<ILRepack>false</ILRepack>
+		<ILRepack>true</ILRepack>
 
 	</PropertyGroup>
 
@@ -25,5 +25,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="strings\" />
+	</ItemGroup>
   
 </Project>

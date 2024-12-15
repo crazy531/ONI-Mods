@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace AchievementUnlock
+namespace Unlock_Cheat.AchievementUnlock
 {
     internal class Achievement_Unlock
     {

@@ -26,6 +26,10 @@ namespace Unlock_Cheat
         [Option("管道相变", "禁止气液管道内容物相变.", null)]
         public bool Conduit { get; set; }
 
+        [JsonProperty]
+        [Option("植物变异", "种子/植物添加变异按钮.", null)]
+        public bool MutantPlant { get; set; }
+
 
         public Options()
         {
@@ -33,7 +37,7 @@ namespace Unlock_Cheat
             this.Skin = true;
 
             this.Conduit = true;
-
+            this.MutantPlant = true;
         }
     }
 }

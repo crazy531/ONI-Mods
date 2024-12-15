@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Conduit_mod
+namespace Unlock_Cheat.Conduit_mod
 {
     internal class Conduits
     {

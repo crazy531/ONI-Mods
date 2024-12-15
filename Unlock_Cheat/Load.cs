@@ -20,9 +20,15 @@ namespace Unlock_Cheat
             Type[] types = this.assembly.GetTypes();
             PUtil.InitLibrary(false);
             new POptions().RegisterOptions(this, typeof(Options));
+#if DEBUG
+            ModUtil.RegisterForTranslation(typeof(Languages));
+#else
+            Localization.RegisterForTranslation(typeof(Languages));
+#endif
+
             if (SingletonOptions<Options>.Instance.Achievement)
             {
-                foreach (Type type in types.Where(n => n.Namespace == "AchievementUnlock")) {
+                foreach (Type type in types.Where(n => n.Namespace == "Unlock_Cheat.AchievementUnlock")) {
                    // Debug.Log("测试Achievement：" + type.FullName);
                     harmony.CreateClassProcessor(type).Patch();
 
@@ -34,7 +40,7 @@ namespace Unlock_Cheat
 
             if (SingletonOptions<Options>.Instance.Skin)
             {
-                foreach (Type type in types.Where(n => n.Namespace == "ItemSkinUnlock"))
+                foreach (Type type in types.Where(n => n.Namespace == "Unlock_Cheat.ItemSkinUnlock"))
                 {
                     //Debug.Log("ItemSkinUnlock：" + type.FullName);
                     harmony.CreateClassProcessor(type).Patch();
@@ -45,9 +51,21 @@ namespace Unlock_Cheat
             if (SingletonOptions<Options>.Instance.Conduit)
             {
 
-                foreach (Type type in types.Where(n => n.Namespace == "Conduit_mod"))
+                foreach (Type type in types.Where(n => n.Namespace == "Unlock_Cheat.Conduit_mod"))
                 {
                    // Debug.Log("Conduit："+ type.FullName);
+                    harmony.CreateClassProcessor(type).Patch();
+
+                }
+
+            }
+
+            if (SingletonOptions<Options>.Instance.MutantPlant)
+            {
+
+                foreach (Type type in types.Where(n => n.Namespace == "Unlock_Cheat.MutantPlants"))
+                {
+                    // Debug.Log("测试Achievement：" + type.FullName);
                     harmony.CreateClassProcessor(type).Patch();
 
                 }

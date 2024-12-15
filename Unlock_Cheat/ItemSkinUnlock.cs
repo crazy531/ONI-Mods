@@ -7,7 +7,7 @@ using System.Text;
 using UnityEngine;
 
 
-namespace ItemSkinUnlock
+namespace Unlock_Cheat.ItemSkinUnlock
 {
 
 
