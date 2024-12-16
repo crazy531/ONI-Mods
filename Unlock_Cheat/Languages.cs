@@ -28,6 +28,15 @@ namespace Unlock_Cheat
                     // Token: 0x0400005E RID: 94
                     public static LocString TOOLTIP = "分析种子不需要" + STRINGS.UI.FormatAsLink("植物分析仪", "GENETICANALYSISSTATION");
                 }
+
+                public class SELFHARVEST
+                {
+                    // Token: 0x0400005D RID: 93
+                    public static LocString NAME = "自我收获";
+
+                    // Token: 0x0400005E RID: 94
+                    public static LocString TOOLTIP = "植物成熟时自动掉落" ;
+                }
             }
         }
     }
